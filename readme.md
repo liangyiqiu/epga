@@ -1,2 +1,2 @@
-##EPGA
-epga system in verilog.
+## EPGA Project
+A rf-board control system in verilog.
