@@ -62,6 +62,29 @@ NET "ce_2594" IOSTANDARD = LVCMOS33;
 
 NET "amp_en" LOC = P16;
 
-# PlanAhead Generated IO constraints 
 
 NET "amp_en" IOSTANDARD = LVCMOS33;
+
+# PlanAhead Generated physical constraints 
+
+NET "trx1_spi_clk_p" LOC = A6;
+NET "trx1_spi_cs" LOC = A4;
+
+# PlanAhead Generated IO constraints 
+
+NET "trx1_spi_cs" IOSTANDARD = LVCMOS33;
+
+# PlanAhead Generated physical constraints 
+
+NET "trx1_spi_mosi_p" LOC = A5;
+NET "trx2_spi_cs" LOC = C9;
+
+# PlanAhead Generated IO constraints 
+
+NET "trx2_spi_cs" IOSTANDARD = LVCMOS33;
+
+# PlanAhead Generated physical constraints 
+
+NET "trx2_spi_clk_p" LOC = C11;
+NET "trx2_spi_clk_n" LOC = A11;
+NET "trx2_spi_mosi_p" LOC = B10;

@@ -25,16 +25,12 @@ module top
     output trx2_spi_mosi_n,
     output trx2_spi_cs,
 
-    output aux1_spi_clk_p,
-    output aux1_spi_clk_n,
-    output aux1_spi_mosi_p,
-    output aux1_spi_mosi_n,
+    output aux1_spi_clk,
+    output aux1_spi_mosi,
     output aux1_spi_cs,
 
-    output aux2_spi_clk_p,
-    output aux2_spi_clk_n,
-    output aux2_spi_mosi_p,
-    output aux2_spi_mosi_n,
+    output aux2_spi_clk,
+    output aux2_spi_mosi,
     output aux2_spi_cs,
     
     output spi_clk_4002,
@@ -64,12 +60,6 @@ wire trx1_spi_mosi;
 
 wire trx2_spi_clk;
 wire trx2_spi_mosi;
-
-wire aux1_spi_clk;
-wire aux1_spi_mosi;
-
-wire aux2_spi_clk;
-wire aux2_spi_mosi;
 
 assign trx1_spi_clk=fpga_spi_clk;
 assign trx1_spi_mosi=fpga_spi_mosi;
@@ -312,46 +302,6 @@ trx2_mosi_obufds
     .I(trx2_spi_mosi),
     .O(trx2_spi_mosi_p),
     .OB(trx2_spi_mosi_n)
-);
-
-OBUFDS #(
-    .IOSTANDARD("LVDS_33")
-)
-aux1_clk_obufds
-(    
-    .I(aux1_spi_clk),
-    .O(aux1_spi_clk_p),
-    .OB(aux1_spi_clk_n)
-);
-
-OBUFDS #(
-    .IOSTANDARD("LVDS_33")
-)
-aux1_mosi_obufds
-(    
-    .I(aux1_spi_mosi),
-    .O(aux1_spi_mosi_p),
-    .OB(aux1_spi_mosi_n)
-);
-
-OBUFDS #(
-    .IOSTANDARD("LVDS_33")
-)
-aux2_clk_obufds
-(    
-    .I(aux2_spi_clk),
-    .O(aux2_spi_clk_p),
-    .OB(aux2_spi_clk_n)
-);
-
-OBUFDS #(
-    .IOSTANDARD("LVDS_33")
-)
-aux2_mosi_obufds
-(    
-    .I(aux2_spi_mosi),
-    .O(aux2_spi_mosi_p),
-    .OB(aux2_spi_mosi_n)
 );
 
 endmodule
