@@ -10,7 +10,7 @@ module spi_listener #(
 );
 
 reg spi_byte_cnt=0;
-reg [7:0] spi_slave_bytes [0:2];
+reg [7:0] spi_slave_bytes [0:1];
 
 always @(posedge clk)
 begin
@@ -32,8 +32,7 @@ begin
     end
     2:
     begin
-        spi_slave_bytes[2]<=spi_slave_byte;
-        spi_data<={spi_slave_bytes[0],spi_slave_bytes[1],spi_slave_bytes[2]};
+        spi_data<={spi_slave_bytes[0],spi_slave_bytes[1],spi_slave_byte};
         spi_listener_interrupt<=1;
         spi_byte_cnt=0;
     end
