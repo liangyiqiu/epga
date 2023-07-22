@@ -20,7 +20,7 @@ module tb_spi_slave;
     reg r_spi_start;
     reg r_spi_dir;
     reg [7:0] r_spi_data_depth;
-    reg [15:0] r_spi_data_tx;
+    reg [23:0] r_spi_data_tx;
     wire w_spi_ready;
 
     // Slave Specific
@@ -52,7 +52,7 @@ module tb_spi_slave;
 
    spi_master #(
     .clk_div(4),
-    .data_depth(16)
+    .data_depth(24)
    )
    spi_master_utt
    (
@@ -76,8 +76,8 @@ module tb_spi_slave;
     r_Rst_L=1;
     #100;
     r_spi_dir=0;
-    r_spi_data_depth=16;
-    r_spi_data_tx=16'haabb;
+    r_spi_data_depth=24;
+    r_spi_data_tx=16'haabbcc;
     r_spi_start=1;
     #100
     r_spi_start=0;

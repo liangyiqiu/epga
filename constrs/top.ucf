@@ -1,38 +1,15 @@
-
-
 NET "clk" IOSTANDARD = LVCMOS33;
-
-
 NET "clk" LOC = P9;
 
+NET "debug_mode" IOSTANDARD = LVCMOS33;
+NET "debug_mode" LOC = N8;
 
 NET "FPGA_RX" IOSTANDARD = LVCMOS33;
-
-
 NET "FPGA_RX" LOC = L1;
 
 
 NET "FPGA_TX" IOSTANDARD = LVCMOS33;
-
-
 NET "FPGA_TX" LOC = L2;
-NET "spi_clk_2594" LOC = D15;
-NET "spi_clk_4002" LOC = F16;
-NET "spi_le_2594" LOC = C16;
-NET "spi_le_4002" LOC = E16;
-NET "spi_sdo_2594" LOC = D16;
-NET "spi_sdo_4002" LOC = F15;
-
-
-NET "spi_clk_2594" IOSTANDARD = LVCMOS33;
-NET "spi_clk_4002" IOSTANDARD = LVCMOS33;
-NET "spi_le_2594" IOSTANDARD = LVCMOS33;
-NET "spi_sdo_2594" IOSTANDARD = LVCMOS33;
-NET "spi_le_4002" IOSTANDARD = LVCMOS33;
-
-
-NET "spi_sdo_4002" IOSTANDARD = LVCMOS33;
-
 
 NET "led[1]" IOSTANDARD = LVCMOS33;
 NET "led[0]" IOSTANDARD = LVCMOS33;
@@ -42,49 +19,5 @@ NET "led[1]" LOC = F1;
 NET "led[0]" LOC = F3;
 
 
-NET "mout_4002" LOC = G16;
-NET "mout_2594" LOC = D14;
 
 
-NET "mout_2594" IOSTANDARD = LVCMOS33;
-NET "mout_4002" IOSTANDARD = LVCMOS33;
-
-
-NET "ce_4002" IOSTANDARD = LVCMOS33;
-
-
-NET "ce_4002" LOC = H16;
-NET "ce_2594" LOC = C15;
-
-
-NET "ce_2594" IOSTANDARD = LVCMOS33;
-
-
-NET "amp_en" LOC = P16;
-
-
-NET "amp_en" IOSTANDARD = LVCMOS33;
-
-# PlanAhead Generated physical constraints 
-
-NET "trx1_spi_clk_p" LOC = A6;
-NET "trx1_spi_cs" LOC = A4;
-
-# PlanAhead Generated IO constraints 
-
-NET "trx1_spi_cs" IOSTANDARD = LVCMOS33;
-
-# PlanAhead Generated physical constraints 
-
-NET "trx1_spi_mosi_p" LOC = A5;
-NET "trx2_spi_cs" LOC = C9;
-
-# PlanAhead Generated IO constraints 
-
-NET "trx2_spi_cs" IOSTANDARD = LVCMOS33;
-
-# PlanAhead Generated physical constraints 
-
-NET "trx2_spi_clk_p" LOC = C11;
-NET "trx2_spi_clk_n" LOC = A11;
-NET "trx2_spi_mosi_p" LOC = B10;

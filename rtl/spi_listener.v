@@ -9,34 +9,37 @@ module spi_listener #(
     output reg spi_listener_interrupt=0
 );
 
-reg spi_byte_cnt=0;
+reg [1:0] spi_byte_cnt=0;
 reg [7:0] spi_slave_bytes [0:1];
 
 always @(posedge clk)
 begin
     if(spi_slave_data_valid)
-    case(spi_byte_cnt)
-    0:
     begin
-        spi_listener_interrupt<=0;
-        if(spi_slave_byte[7:5]==first_byte[7:5])
+        case(spi_byte_cnt)
+        0:
         begin
-            spi_slave_bytes[0]<=spi_slave_byte;
-            spi_byte_cnt=1;
+            if(spi_slave_byte[7:5]==first_byte[7:5])
+            begin
+                spi_slave_bytes[0]<=spi_slave_byte;
+                spi_byte_cnt<=1;
+            end
         end
+        1:
+        begin
+            spi_slave_bytes[1]<=spi_slave_byte;
+            spi_byte_cnt<=2;
+        end
+        2:
+        begin
+            spi_data<={spi_slave_bytes[0],spi_slave_bytes[1],spi_slave_byte};
+            spi_listener_interrupt<=1;
+            spi_byte_cnt<=0;
+        end
+        endcase
     end
-    1:
-    begin
-        spi_slave_bytes[1]<=spi_slave_byte;
-        spi_byte_cnt=2;
-    end
-    2:
-    begin
-        spi_data<={spi_slave_bytes[0],spi_slave_bytes[1],spi_slave_byte};
-        spi_listener_interrupt<=1;
-        spi_byte_cnt=0;
-    end
-    endcase
+    else
+        spi_listener_interrupt<=0;
 end
 
 endmodule

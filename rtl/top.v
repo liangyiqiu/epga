@@ -11,7 +11,8 @@ module top
     input fpga_spi_clk_n,
     input fpga_spi_mosi_p,
     input fpga_spi_mosi_n,
-    input fpga_spi_cs,
+    input fpga_spi_cs_p,
+    input fpga_spi_cs_n,
 
     output trx1_spi_clk_p,
     output trx1_spi_clk_n,
@@ -54,6 +55,7 @@ module top
 
 wire fpga_spi_clk;
 wire fpga_spi_mosi;
+wire fpga_spi_cs;
 
 wire trx1_spi_clk;
 wire trx1_spi_mosi;
@@ -252,16 +254,37 @@ process process(
     .amp_en(amp_en)
 );
 
-IBUFDS fpga_spi_clk_ibufds(    
+IBUFDS #(
+    .IOSTANDARD("LVDS_33"),
+    .DIFF_TERM("FALSE")
+)
+fpga_spi_clk_ibufds
+(    
     .O(fpga_spi_clk),
     .I(fpga_spi_clk_p),
     .IB(fpga_spi_clk_n)
 );
 
-IBUFDS fpga_spi_mosi_ibufds(    
+IBUFDS #(
+    .IOSTANDARD("LVDS_33"),
+    .DIFF_TERM("FALSE")
+)
+fpga_spi_mosi_ibufds
+(    
     .O(fpga_spi_mosi),
     .I(fpga_spi_mosi_p),
     .IB(fpga_spi_mosi_n)
+);
+
+IBUFDS #(
+    .IOSTANDARD("LVDS_33"),
+    .DIFF_TERM("FALSE")
+)
+fpga_spi_cs_ibufds
+(    
+    .O(fpga_spi_cs),
+    .I(fpga_spi_cs_p),
+    .IB(fpga_spi_cs_n)
 );
 
 OBUFDS #(

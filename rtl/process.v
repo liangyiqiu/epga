@@ -38,7 +38,7 @@ localparam              PROCESS_RESET    = 0,
                         ADF4002_INIT     = 1, 
                         LMX2594_INIT     = 2,
                         UART_DEBUG       = 3,
-                        NORMAL_OPERATION =4;
+                        NORMAL_OPERATION = 4;
 
 wire [7:0] rx_byte [uart_data_depth-1:0];
 
@@ -50,7 +50,7 @@ generate
     end
 endgenerate
 
-reg [2:0] process_state=PROCESS_RESET;
+reg [7:0] process_state=PROCESS_RESET;
 reg [7:0] init_reg_addr;
 reg spi_wait;
 
@@ -106,7 +106,7 @@ begin
         begin
             spi_start[1]<=0;
             amp_en<=1;
-            if(debug_mode)
+            if(!debug_mode)
                 process_state<=UART_DEBUG;
             else
                 process_state<=NORMAL_OPERATION;
