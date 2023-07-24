@@ -13,26 +13,36 @@ module top
     input fpga_spi_mosi_n,
     input fpga_spi_cs_p,
     input fpga_spi_cs_n,
+    input fpga_tx,
+    input fpga_rx,
 
     output trx1_spi_clk_p,
     output trx1_spi_clk_n,
     output trx1_spi_mosi_p,
     output trx1_spi_mosi_n,
     output trx1_spi_cs,
+    output trx1_en_n,
+    output trx1_tx,
+    output trx1_rx,
 
     output trx2_spi_clk_p,
     output trx2_spi_clk_n,
     output trx2_spi_mosi_p,
     output trx2_spi_mosi_n,
     output trx2_spi_cs,
+    output trx2_en_n,
+    output trx2_tx,
+    output trx2_rx,
 
     output aux1_spi_clk,
     output aux1_spi_mosi,
     output aux1_spi_cs,
+    output aux1_sw,
 
     output aux2_spi_clk,
     output aux2_spi_mosi,
     output aux2_spi_cs,
+    output aux2_sw,
     
     output spi_clk_4002,
     output spi_sdo_4002,
@@ -66,18 +76,27 @@ wire trx2_spi_mosi;
 assign trx1_spi_clk=fpga_spi_clk;
 assign trx1_spi_mosi=fpga_spi_mosi;
 assign trx1_spi_cs=fpga_spi_cs;
+assign trx1_en_n=1'b1;
 
 assign trx2_spi_clk=fpga_spi_clk;
 assign trx2_spi_mosi=fpga_spi_mosi;
 assign trx2_spi_cs=fpga_spi_cs;
+assign trx2_en_n=1'b1;
 
 assign aux1_spi_clk=fpga_spi_clk;
 assign aux1_spi_mosi=fpga_spi_mosi;
 assign aux1_spi_cs=fpga_spi_cs;
+assign aux1_sw=1'b1;
 
 assign aux2_spi_clk=fpga_spi_clk;
 assign aux2_spi_mosi=fpga_spi_mosi;
 assign aux2_spi_cs=fpga_spi_cs;
+assign aux2_sw=1'b1;
+
+assign trx1_tx=fpga_tx;
+assign trx1_rx=fpga_rx;
+assign trx2_tx=fpga_tx;
+assign trx2_rx=fpga_rx;
 
 assign led[0]=~mout_4002;
 assign led[1]=~mout_2594;
@@ -216,7 +235,7 @@ spi_slave
    .i_SPI_CS_n(fpga_spi_cs)
 );
 
-parameter first_byte=8'h20;
+parameter first_byte=8'h00;
 wire [23:0] fpga_spi_data;
 wire spi_listener_interrupt;
 

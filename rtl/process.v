@@ -176,7 +176,7 @@ NORMAL_OPERATION:
 begin
     if(spi_listener_interrupt)
     case(fpga_spi_data[23:16])
-    8'h20:
+    8'h00:
     begin
         amp_en<=fpga_spi_data[1];
     end
