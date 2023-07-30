@@ -1,6 +1,6 @@
 module spi_listener #(
     parameter first_byte=8'h00,
-    parameter listener_timeout=200
+    parameter listener_timeout=400
 )
 (
     input clk,
@@ -32,29 +32,22 @@ begin
         end
         1:
         begin
-            if(timeout)
-                spi_byte_cnt<=0;
-            else
-            begin
-                spi_slave_bytes[1]<=spi_slave_byte;
-                spi_byte_cnt<=2;
-            end
+            spi_slave_bytes[1]<=spi_slave_byte;
+            spi_byte_cnt<=2;
         end
         2:
         begin
-            if(timeout)
-                spi_byte_cnt<=0;
-            else
-            begin
-                spi_data<={spi_slave_bytes[0],spi_slave_bytes[1],spi_slave_byte};
-                spi_listener_interrupt<=1;
-                spi_byte_cnt<=0;
-            end
+            spi_data<={spi_slave_bytes[0],spi_slave_bytes[1],spi_slave_byte};
+            spi_listener_interrupt<=1;
+            spi_byte_cnt<=0;
         end
         endcase
     end
     else
         spi_listener_interrupt<=0;
+
+    if(timeout&&spi_byte_cnt!=0)
+        spi_byte_cnt<=0;
 end
 
 always @(posedge clk)
