@@ -73,30 +73,36 @@ wire trx1_spi_mosi;
 wire trx2_spi_clk;
 wire trx2_spi_mosi;
 
-assign trx1_spi_clk=fpga_spi_clk;
-assign trx1_spi_mosi=fpga_spi_mosi;
-assign trx1_spi_cs=fpga_spi_cs;
+wire internal_spi_clk;
+wire internal_spi_mosi;
+wire internal_spi_cs;
+wire internal_rx;
+wire internal_tx;
+
+assign trx1_spi_clk=internal_spi_clk;
+assign trx1_spi_mosi=internal_spi_mosi;
+assign trx1_spi_cs=internal_spi_cs;
 assign trx1_en_n=1'b1;
 
-assign trx2_spi_clk=fpga_spi_clk;
-assign trx2_spi_mosi=fpga_spi_mosi;
-assign trx2_spi_cs=fpga_spi_cs;
+assign trx2_spi_clk=internal_spi_clk;
+assign trx2_spi_mosi=internal_spi_mosi;
+assign trx2_spi_cs=internal_spi_cs;
 assign trx2_en_n=1'b1;
 
-assign aux1_spi_clk=fpga_spi_clk;
-assign aux1_spi_mosi=fpga_spi_mosi;
-assign aux1_spi_cs=fpga_spi_cs;
+assign aux1_spi_clk=internal_spi_clk;
+assign aux1_spi_mosi=internal_spi_mosi;
+assign aux1_spi_cs=internal_spi_cs;
 assign aux1_sw=1'b1;
 
-assign aux2_spi_clk=fpga_spi_clk;
-assign aux2_spi_mosi=fpga_spi_mosi;
-assign aux2_spi_cs=fpga_spi_cs;
+assign aux2_spi_clk=internal_spi_clk;
+assign aux2_spi_mosi=internal_spi_mosi;
+assign aux2_spi_cs=internal_spi_cs;
 assign aux2_sw=1'b1;
 
-assign trx1_tx=fpga_tx;
-assign trx1_rx=fpga_rx;
-assign trx2_tx=fpga_tx;
-assign trx2_rx=fpga_rx;
+assign trx1_tx=internal_tx;
+assign trx1_rx=internal_rx;
+assign trx2_tx=internal_tx;
+assign trx2_rx=internal_rx;
 
 assign led[0]=~mout_4002;
 assign led[1]=~mout_2594;
@@ -113,8 +119,8 @@ rst rst(
 parameter spi_data_depth_max = 54; //54 bits max spi transmition
 parameter spi_clk_div = 5;  //spi clock=100M/5=20MHz
 
-wire [1:0] spi_start;
-wire [1:0] spi_ready;
+wire [2:0] spi_start;
+wire [2:0] spi_ready;
 wire spi_dir;
 wire [7:0] spi_data_depth;
 wire [spi_data_depth_max-1:0] spi_data_tx;
@@ -152,6 +158,25 @@ lmx2594_spi(
     .spi_sclk(spi_clk_2594),
     .spi_mosi(spi_sdo_2594),
     .spi_le(spi_le_2594)
+);
+
+parameter spi_clk_div_internal = 10;
+
+spi_master #(
+    .clk_div(spi_clk_div_internal),
+    .data_depth(spi_data_depth_max)
+)
+internal_spi(
+    .clk(clk),
+    .rst_n(rst_n),
+    .spi_start(spi_start[2]),
+    .spi_dir(spi_dir),
+    .spi_data_depth(spi_data_depth),
+    .spi_data_tx(spi_data_tx),
+    .spi_ready(spi_ready[2]),
+    .spi_sclk(internal_spi_clk),
+    .spi_mosi(internal_spi_mosi),
+    .spi_le(internal_spi_cs)
 );
 
 parameter  Baud_rate = 115200; 	
@@ -270,7 +295,9 @@ process process(
     .spi_start(spi_start),
     .spi_data_tx(spi_data_tx),
     .spi_data_depth(spi_data_depth),
-    .amp_en(amp_en)
+    .amp_en(amp_en),
+    .internal_rx(internal_rx),
+    .internal_tx(internal_tx)
 );
 
 IBUFDS #(

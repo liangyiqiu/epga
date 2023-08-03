@@ -20,11 +20,14 @@ module process
     input spi_listener_interrupt,
     input [23:0] fpga_spi_data,
 
-    input [1:0] spi_ready,
+    input [2:0] spi_ready,
     output reg spi_dir,
-    output reg [1:0] spi_start,
+    output reg [2:0] spi_start,
     output reg [23:0] spi_data_tx,
     output reg [7:0] spi_data_depth,
+
+    output reg internal_rx,
+    output reg internal_tx,
 
     output reg amp_en
 );
@@ -71,6 +74,8 @@ begin
     spi_start<=0;
     receive_data_bytes<=2;
     spi_wait<=0;
+    internal_rx<=1;
+    internal_tx<=0;
     amp_en<=0;
     init_reg_addr<=0;
     if(rst_n)
@@ -106,7 +111,7 @@ begin
         begin
             spi_start[1]<=0;
             amp_en<=1;
-            if(debug_mode)
+            if(!debug_mode)
                 process_state<=UART_DEBUG;
             else
                 process_state<=NORMAL_OPERATION;
@@ -121,27 +126,27 @@ begin
         && (rx_byte[1] == 8'h0D) && (rx_byte[0] == 8'h0A)) //'head' and 'end' check 
         begin
             case(rx_byte[8])
-            8'h01: // write adf4002
+            8'h01: // write fpga spi
             begin
                 spi_dir<=0;
                 spi_data_depth<=24;
                 spi_data_tx<={rx_byte[7],rx_byte[6],rx_byte[5]};
-                spi_start[0]<=1;   
+                spi_start[2]<=1;   
             end
-            8'h02: // write lmx2594
+            8'h02:
             begin
-                spi_dir<=0;
-                spi_data_depth<=24;
-                spi_data_tx<={rx_byte[7],rx_byte[6],rx_byte[5]};
-                spi_start[1]<=1;   
+                internal_rx<=0;
+                internal_tx<=1;
             end
-            8'h0a: //open amplifier power switch
+            8'h03:
             begin
-                amp_en<=1;
+                internal_rx<=1;
+                internal_tx<=0;
             end
-            8'h0b: //close amplifier power switch
+            8'h03:
             begin
-                amp_en<=0;
+                internal_rx<=0;
+                internal_tx<=0;
             end
             8'hAA:// uart connection test
             begin
@@ -171,16 +176,6 @@ begin
         spi_wait<=0;
         spi_start<=1;
     end   
-end
-NORMAL_OPERATION:
-begin
-    if(spi_listener_interrupt)
-    case(fpga_spi_data[23:16])
-    8'h00:
-    begin
-        amp_en<=fpga_spi_data[1];
-    end
-    endcase
 end
 endcase
 
