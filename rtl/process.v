@@ -106,7 +106,7 @@ begin
         begin
             spi_start[1]<=0;
             amp_en<=1;
-            if(!debug_mode)
+            if(debug_mode)
                 process_state<=UART_DEBUG;
             else
                 process_state<=NORMAL_OPERATION;
