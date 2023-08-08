@@ -143,7 +143,7 @@ begin
                 internal_rx<=1;
                 internal_tx<=0;
             end
-            8'h03:
+            8'h04:
             begin
                 internal_rx<=0;
                 internal_tx<=0;
